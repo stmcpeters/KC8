@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-serif">Welcome to my Knowledge Check 8</h1>
+<h2 class="mt-15">No robots allowed!</h2>
+<p>If you're really not a robot, please complete the 2 step user verification below :]</p>
+<form action="?" method="POST" class="mt-15">
+  <div class="g-recaptcha" data-sitekey="{{ SITE_KEY }}"></div>
+</form>
+<button class="bg-blue-500 text-white p-5 rounded mt-15" type="button"><a href="{{ url_for('login') }}">Login with Google</a></button>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

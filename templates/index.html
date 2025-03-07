@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-serif">Top Tech Articles from the New York Times</h1>
+
+<div class="grid grid-cols-3 grid-rows-2">
+  <div class="float-right mt-5 p-5 mb-5 bg-yellow-100 border border-yellow-100 rounded">
+    <h2 class="text-2xl font-serif mb-4">Tech Joke of the Day</h2>
+    <!-- displays the joke fetched from API and stored in the database -->
+    <!-- if joke is not available, client facing error message will show -->
+    {% if joke %}
+      <p>{{ joke.setup }}</p>
+      <p>{{ joke.punchline }}</p>
+    {% else %}
+      <p>No joke available.</p>
+    {% endif %}
+  </div>
+  <div class="float-right">
+    <button class="bg-indigo-400 text-white p-5 rounded mt-15 ml-50 cursor-pointer" type="button"><a href='/add'>Add Article</a></button>
+  </div>
+  <div class="float-right">
+    <a href="/export"><button class="bg-gray-900 text-white p-5 rounded mt-15 ml-5 cursor-pointer" type="button">Export Data</button></a>
+  </div>
+  <div class="float-right">
+    <form action="/search" method="POST">
+      <div class="float-right m-10">
+        <label for="search" class="text-2xl font-serif">Search Articles</label><br />
+        <input type="text" class="mt-5 mb-5 border border-gray-900 w-70" id="search" name="search" placeholder="Search ">
+        <input type="hidden" name="page" value="1">
+        <button type="submit" id="search"class="bg-blue-500 text-white p-3 ml-5 rounded cursor-pointer">Search</button>
+      </div>
+    </form>
+  </div>
+  <div class="float-right mt-10 ml-50">
+    <form action="/advanced_search" method="POST">
+      <div class="float-right">
+        <label for="search" class="text-2xl font-serif">Advanced Search Articles</label><br />
+        <input type="text" class="mt-5 mb-5 border border-gray-900 w-70" id="search" name="search" placeholder="Search ">
+        <input type="hidden" name="page" value="1">
+        <button type="submit" id="search"class="bg-blue-500 text-white p-3 ml-5 rounded cursor-pointer">Advanced Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<table class="table-auto w-full bg-white border border-gray-300">
+  <thead class="text-2xl font-serif bg-gray-600 text-white">
+    <tr>
+      <th>Title</th>
+      <th>Author(s)</th>
+      <th>Description</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in items_on_page %}
+      <tr>
+        <td class="p-10"><a class="underline" href="https://www.nytimes.com/{{ data.article_link }}">{{ data.title }}</a></td>
+        <td class="p-10 cursor-default">{{ data.author }}</td>
+        <td class="p-10 cursor-default">{{ data.description }}</td>
+        <td><button type="button" class="p-5 m-10 bg-green-800 text-white border cursor-pointer hover:bg-grey-700 rounded"><a href="/edit/{{ data.id }}">Edit</a></button></td>
+        <td><button type="button" class="p-5 m-10 bg-red-600 text-white cursor-pointer hover:bg-grey-700 border rounded"><a href="/delete/{{ data.id }}">Delete</a></button></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<span class="p-2 m-3">Page {{ page }} of {{ total_pages }}</span>
+<div class="grid grid-cols-2 grid-rows-1">
+  <div class="float-right">
+    {% if page > 1 %}
+    <button type="button" class="p-5 m-5 bg-gray-600 text-white cursor-pointer hover:bg-grey-700 border rounded"><a href="{{ url_for('index', page=page-1) }}">Previous</a></button>
+    {% endif %}
+  </div>
+  <div class="float-right">
+    {% if page < total_pages %}
+    <button type="button" class="p-5 m-5 bg-gray-600 text-white cursor-pointer hover:bg-grey-700 border rounded"><a href="{{ url_for('index', page=page+1) }}">Next</a></button>
+    {% endif %}
+  </div>
+</div>
+<button class="bg-black text-white p-5 rounded mt-15" type="button"><a href="{{ url_for('logout') }}"">Log Out</a></button>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+<h1 class="text-3xl">Edit an Article</h1>
+<form action="/edit/{{ article.id }}" method="POST">
+  <label for="title">Title</label>
+  <br />
+  <input type="textarea" name="title" id="title" class="ml-5 mt-5 mb-5 border border-gray-900 w-85" required value="{{ article.title }}">
+  <br />
+  <label for="author">Author(s)</label>
+  <br />
+  <input type="textarea" name="author" id="author" class="ml-5 mt-5 mb-5 border border-gray-900 w-85" required value="{{ article.author }}">
+  <br />
+  <label for="description">Description</label>
+  <br />
+  <input type="textarea" name="description" id="description" class="ml-5 mt-5 mb-5 border border-gray-900 w-85" required value="{{ article.description }}">
+  <br />
+  <label for="article_link">Link</label>
+  <br />
+  <input type="textarea" name="article_link" id="article_link" class="ml-5 mt-5 mb-5 border border-gray-900 w-85" required value="{{ article.article_link }}">
+  <br />
+  <button type="submit" class="bg-blue-500 text-white p-5 rounded m-10 cursor-pointer">Add</button>
+  <button type="button" class="bg-gray-400 text-white p-5 rounded m-10 cursor-pointer"><a href="/index">Return to Home</button>
+</form>
+{% endblock %}

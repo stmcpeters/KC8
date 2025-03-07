@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-serif mb-10">Advanced Search Results</h1>
+<table class="table-auto w-full bg-white border border-gray-300">
+  <thead class="text-2xl font-serif bg-gray-600 text-white">
+    <tr>
+      <th>Title</th>
+      <th>Author(s)</th>
+      <th>Description</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in items_on_page %}
+      <tr>
+        <td class="p-10"><a class="underline" href="https://www.nytimes.com/{{ data.article_link }}">{{ data.title }}</a></td>
+        <td class="p-10 cursor-default">{{ data.author }}</td>
+        <td class="p-10 cursor-default">{{ data.description }}</td>
+        <td><button type="button" class="p-5 m-10 bg-green-800 text-white border cursor-pointer hover:bg-grey-700 rounded"><a href="/edit/{{ data.id }}">Edit</a></button></td>
+        <td><button type="button" class="p-5 m-10 bg-red-600 text-white cursor-pointer hover:bg-grey-700 border rounded"><a href="/delete/{{ data.id }}">Delete</a></button></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<span class="p-2 m-3">Page {{ page }} of {{ total_pages }}</span>
+<div class="grid grid-cols-3 grid-rows-1">
+  <div class="float-right">
+    {% if page > 1 %}
+    <form action="/search" method="POST" class="inline">
+      <input type="hidden" name="search" value="{{ search }}">
+      <input type="hidden" name="page" value="{{ page - 1 }}">
+      <button type="submit" class="p-5 m-5 bg-gray-600 text-white cursor-pointer hover:bg-grey-700 border rounded">Previous</button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="float-right">
+    {% if page < total_pages %}
+    <form action="/search" method="POST" class="inline">
+      <input type="hidden" name="search" value="{{ search }}">
+      <input type="hidden" name="page" value="{{ page + 1 }}">
+      <button type="submit" class="p-5 m-5 bg-gray-600 text-white cursor-pointer hover:bg-grey-700 border rounded">Next</button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="float-right">
+    <button type="button" class="bg-gray-400 text-white p-5 rounded ml-20 m-5 cursor-pointer"><a href="/index">Return to Home</button>
+  </div>
+</div>
+{% endblock %}
