@@ -1,0 +1,18 @@
+services:
+  - name: server
+    plan: free
+    type: web
+    env: node
+    repo: https://github.com/stmcpeters/KC8
+    buildCommand: 
+      python3 -m pip install -r requirements.txt 
+      python3 main.py
+    startCommand: python3 app.py
+
+databases:
+  - name: tech_news.db
+    plan: free
+    ipAllowList: []
+  - name: jokes_api.db
+    plan: free
+    ipAllowList: []
