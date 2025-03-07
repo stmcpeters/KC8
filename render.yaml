@@ -10,7 +10,7 @@ services:
     startCommand: python3 app.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.13
+        value: 3.13.1
 
 databases:
   - name: tech_news.db
