@@ -20,7 +20,7 @@ import csv
 # load environment variables from .env file
 # assign the environment variables to variables to be used
 load_dotenv()
-SECRET_KEY = 'secret'
+SECRET_KEY = os.getenv('SECRET_KEY')
 SITE_KEY = os.getenv('SITE_KEY')
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
