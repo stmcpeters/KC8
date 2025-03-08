@@ -1,12 +1,13 @@
 # New York Times Technology News Scraper
 
 ### Overview of project
-This project is a Python-based web application built with Flask that scrapes trending technology articles from the [New York Times](https://www.nytimes.com/section/technology) and fetches tech jokes from a [Joke API](https://github.com/15Dkatz/official_joke_api?tab=readme-ov-file). The app stores article data in a SQLite database called `tech_news` and random tech jokes in another database called `jokes_api`. The frontend is styled using Tailwind CSS, ensuring a clean and responsive user interface.
+This project is a Python-based web application built with Flask that scrapes trending technology articles from the [New York Times](https://www.nytimes.com/section/technology) and fetches tech jokes from a [Joke API](https://github.com/15Dkatz/official_joke_api?tab=readme-ov-file). The app stores article data in a SQLite database called `tech_news` and random tech jokes in another database called `jokes_api`. The frontend is styled using Tailwind CSS, ensuring a clean and responsive user interface. This project is deployed using Render and can be found here: https://kc8.onrender.com/
 
 ### Demo
 
 
-https://github.com/user-attachments/assets/e3d835a8-f3a9-4762-ad87-736d8cf1ebd4
+https://github.com/user-attachments/assets/08dc1c49-15b2-44a5-9eaf-29fc73462252
+
 
 
 
@@ -23,6 +24,7 @@ https://github.com/user-attachments/assets/e3d835a8-f3a9-4762-ad87-736d8cf1ebd4
 - Advanced Search Functionality: Allows users to search for specific articles matching multiple conditions (title AND description) within the scraped database.
 - Pagination: Implements pagination for better navigation through articles.
 - Data Export: Allows users to download a CSV file with the news article data scraped.
+- Render: Service used to deploy the front and backend of this project.
 
 
 ### Technologies Used
@@ -37,6 +39,7 @@ https://github.com/user-attachments/assets/e3d835a8-f3a9-4762-ad87-736d8cf1ebd4
 - OAuthlib (for Google OAuth integration)
 - Google reCAPTCHA
 - FTS5 (Full-Text Search)
+- Render
 
 ### Installation Instructions
 #### Prerequisites 
@@ -44,11 +47,15 @@ Python 3.x
 
 
 1. Clone the Repository:
-`git clone https://github.com/yourusername/returning-grades.git <project-name>`
-`cd KC5`
+```
+git clone https://github.com/yourusername/KC8.git <project-name>
+cd <project-name>
+```
 2. Create a Virtual Environment:
-`python -m venv venv`
-`source venv/bin/activate`  
+```
+python3 -m venv venv
+source venv/bin/activate
+```
 3. Install Dependencies:
 `pip install -r requirements.txt`
 4. Get your OAuth 2.0 credentials from the Google API Console [here](https://developers.google.com/identity/protocols/oauth2#1.-obtain-oauth-2.0-credentials-from-the-dynamic_data.setvar.console_name.)
@@ -61,6 +68,45 @@ Python 3.x
 7. Run the Application:
 `python3 app.py`
 The app will be available at `http://127.0.0.1:8000/`.
+
+### Deployment Process
+#### Deployment to Render
+- Sign up on [Render](https://render.com/)
+- Create a new Web Service.
+- Connect your GitHub repository.
+- Select Python as the runtime.
+- Add the necessary environment variables (same as in `.env`).
+#### Creating `render.yaml` File
+- This is a example template:
+```
+services:
+  - name: server
+    plan: free
+    type: web
+    env: node
+    repo: <LINK_TO_GITHUB_REPO>
+    buildCommand: 
+      python3 -m pip install -r requirements.txt  # installs all the needed dependencies for the project
+      python3 main.py                             # fetches new tech articles and jokes from API
+    startCommand: python3 app.py                  # command for Render to start Flask app
+    envVars:
+      - key: PYTHON_VERSION                       # specifies the version of Python the project uses
+        value: 3.13.1
+
+databases:
+  - name: <DATABASE_NAME_1>
+    plan: free
+    ipAllowList: []
+  - name: <DATABASE_NAME_1>
+    plan: free
+    ipAllowList: []
+```
+
+#### OAuth Configuration
+- Initially, Google OAuth was in testing mode, which caused sign-in issues.
+- Had to switch OAuth from testing to production in the Google API Console to allow public sign-ins.
+#### Handling Redirect URI Mismatch
+- If Google rejected OAuth authentication due to a redirect URI mismatch, ensure an exact match between the URI in Google Console and the actual app redirect URI (including https:// and no trailing slashes).
 
 ### Testing
 Unittest coverage report can be generated using `coverage run -m unittest tests/test_app.py --v`
